@@ -498,6 +498,25 @@
               ]
             }
           ]
+        },
+        "to_code": {
+          "@cds.persistence.name": "TO_CODE",
+          "type": "cds.Association",
+          "target": "ComplaintsService.Codes",
+          "on": [
+            {
+              "ref": [
+                "to_code",
+                "CODE"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
         }
       },
       "$syntax": "projection"
@@ -1174,6 +1193,25 @@
               ]
             }
           ]
+        },
+        "to_code": {
+          "@cds.persistence.name": "TO_CODE",
+          "type": "cds.Association",
+          "target": "egger.qm.Codes",
+          "on": [
+            {
+              "ref": [
+                "to_code",
+                "CODE"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
         }
       }
     },
@@ -1458,6 +1496,221 @@
         }
       }
     },
+    "localized.ComplaintsService.Complaints": {
+      "kind": "entity",
+      "@cds.persistence.name": "LOCALIZED_COMPLAINTSSERVICE_COMPLAINTS",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "localized.egger.qm.Complaints"
+            ]
+          }
+        }
+      },
+      "elements": {
+        "ID": {
+          "@cds.persistence.name": "ID",
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "modifiedAt": {
+          "@Common.Label": "{i18n>ChangedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "MODIFIEDAT",
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.DateTime"
+        },
+        "createdAt": {
+          "@Common.Label": "{i18n>CreatedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "CREATEDAT",
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.DateTime"
+        },
+        "createdBy": {
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "CREATEDBY",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255
+        },
+        "modifiedBy": {
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "MODIFIEDBY",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255
+        },
+        "complaintNo": {
+          "@cds.persistence.name": "COMPLAINTNO",
+          "type": "cds.String"
+        },
+        "aufnr": {
+          "@cds.persistence.name": "AUFNR",
+          "type": "cds.String"
+        },
+        "matnr": {
+          "@cds.persistence.name": "MATNR",
+          "type": "cds.String"
+        },
+        "kmatnr": {
+          "@cds.persistence.name": "KMATNR",
+          "type": "cds.String"
+        },
+        "makt": {
+          "@cds.persistence.name": "MAKT",
+          "type": "cds.String"
+        },
+        "delivery": {
+          "@cds.persistence.name": "DELIVERY",
+          "type": "cds.String"
+        },
+        "kunnr": {
+          "@cds.persistence.name": "KUNNR",
+          "type": "cds.String"
+        },
+        "werks": {
+          "@cds.persistence.name": "WERKS",
+          "type": "cds.String"
+        },
+        "menge": {
+          "@cds.persistence.name": "MENGE",
+          "type": "cds.Double"
+        },
+        "unit": {
+          "@cds.persistence.name": "UNIT",
+          "type": "cds.String"
+        },
+        "description": {
+          "@cds.persistence.name": "DESCRIPTION",
+          "type": "cds.String"
+        },
+        "code": {
+          "@cds.persistence.name": "CODE",
+          "type": "cds.String"
+        },
+        "status": {
+          "@cds.persistence.name": "STATUS",
+          "type": "cds.String"
+        },
+        "attachments": {
+          "@cds.persistence.name": "ATTACHMENTS",
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "ComplaintsService.Attachments",
+          "on": [
+            {
+              "ref": [
+                "attachments",
+                "complaint"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "comments": {
+          "@cds.persistence.name": "COMMENTS",
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "ComplaintsService.Comments",
+          "on": [
+            {
+              "ref": [
+                "comments",
+                "complaint"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "payment": {
+          "@cds.persistence.name": "PAYMENT",
+          "type": "cds.Association",
+          "target": "ComplaintsService.Payments",
+          "on": [
+            {
+              "ref": [
+                "payment",
+                "complaint"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "to_code": {
+          "@cds.persistence.name": "TO_CODE",
+          "type": "cds.Association",
+          "target": "localized.ComplaintsService.Codes",
+          "on": [
+            {
+              "ref": [
+                "to_code",
+                "CODE"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        }
+      }
+    },
     "localized.egger.qm.Codes": {
       "kind": "entity",
       "@cds.persistence.name": "LOCALIZED_EGGER_QM_CODES",
@@ -1557,6 +1810,225 @@
               "ref": [
                 "$user",
                 "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "localized.egger.qm.Complaints": {
+      "kind": "entity",
+      "@cds.persistence.name": "LOCALIZED_EGGER_QM_COMPLAINTS",
+      "@odata.draft.enabled": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "egger.qm.Complaints"
+            ],
+            "as": "L"
+          },
+          "columns": [
+            "*"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "@cds.persistence.name": "ID",
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "modifiedAt": {
+          "@Common.Label": "{i18n>ChangedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "MODIFIEDAT",
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.DateTime"
+        },
+        "createdAt": {
+          "@Common.Label": "{i18n>CreatedAt}",
+          "@Core.Computed": true,
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.persistence.name": "CREATEDAT",
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.DateTime"
+        },
+        "createdBy": {
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "CREATEDBY",
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255
+        },
+        "modifiedBy": {
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Computed": true,
+          "@Core.Description": "{i18n>UserID.Description}",
+          "@Core.Immutable": true,
+          "@UI.HiddenFilter": true,
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@cds.persistence.name": "MODIFIEDBY",
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255
+        },
+        "complaintNo": {
+          "@cds.persistence.name": "COMPLAINTNO",
+          "type": "cds.String"
+        },
+        "aufnr": {
+          "@cds.persistence.name": "AUFNR",
+          "type": "cds.String"
+        },
+        "matnr": {
+          "@cds.persistence.name": "MATNR",
+          "type": "cds.String"
+        },
+        "kmatnr": {
+          "@cds.persistence.name": "KMATNR",
+          "type": "cds.String"
+        },
+        "makt": {
+          "@cds.persistence.name": "MAKT",
+          "type": "cds.String"
+        },
+        "delivery": {
+          "@cds.persistence.name": "DELIVERY",
+          "type": "cds.String"
+        },
+        "kunnr": {
+          "@cds.persistence.name": "KUNNR",
+          "type": "cds.String"
+        },
+        "werks": {
+          "@cds.persistence.name": "WERKS",
+          "type": "cds.String"
+        },
+        "menge": {
+          "@cds.persistence.name": "MENGE",
+          "type": "cds.Double"
+        },
+        "unit": {
+          "@cds.persistence.name": "UNIT",
+          "type": "cds.String"
+        },
+        "description": {
+          "@cds.persistence.name": "DESCRIPTION",
+          "type": "cds.String"
+        },
+        "code": {
+          "@cds.persistence.name": "CODE",
+          "type": "cds.String"
+        },
+        "status": {
+          "@cds.persistence.name": "STATUS",
+          "type": "cds.String"
+        },
+        "attachments": {
+          "@cds.persistence.name": "ATTACHMENTS",
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "egger.qm.Attachments",
+          "on": [
+            {
+              "ref": [
+                "attachments",
+                "complaint"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "comments": {
+          "@cds.persistence.name": "COMMENTS",
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "egger.qm.Comments",
+          "on": [
+            {
+              "ref": [
+                "comments",
+                "complaint"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "payment": {
+          "@cds.persistence.name": "PAYMENT",
+          "type": "cds.Association",
+          "target": "egger.qm.Payments",
+          "on": [
+            {
+              "ref": [
+                "payment",
+                "complaint"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "to_code": {
+          "@cds.persistence.name": "TO_CODE",
+          "type": "cds.Association",
+          "target": "localized.egger.qm.Codes",
+          "on": [
+            {
+              "ref": [
+                "to_code",
+                "CODE"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
               ]
             }
           ]

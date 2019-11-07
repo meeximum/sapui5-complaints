@@ -64,4 +64,5 @@ entity Complaints : cuid, managed {
   attachments : Association to many Attachments on attachments.complaint = $self.ID;
   comments : Association to many Comments on comments.complaint = $self.ID;
   payment : Association to Payments on payment.complaint = $self.ID;
+  to_code: Association to Codes on to_code.CODE = $self.code;
 }

@@ -47,6 +47,10 @@
           <End Role="Complaints" EntitySet="Complaints"/>
           <End Role="Payments" EntitySet="Payments"/>
         </AssociationSet>
+        <AssociationSet Name="Complaints_to_code" Association="ComplaintsService.Complaints_to_code">
+          <End Role="Complaints" EntitySet="Complaints"/>
+          <End Role="Codes" EntitySet="Codes"/>
+        </AssociationSet>
         <AssociationSet Name="Orders_items" Association="ComplaintsService.Orders_items">
           <End Role="Orders" EntitySet="Orders"/>
           <End Role="OrderItems" EntitySet="OrderItems"/>
@@ -120,6 +124,7 @@
         <NavigationProperty Name="attachments" Relationship="ComplaintsService.Complaints_attachments" FromRole="Complaints" ToRole="Attachments"/>
         <NavigationProperty Name="comments" Relationship="ComplaintsService.Complaints_comments" FromRole="Complaints" ToRole="Comments"/>
         <NavigationProperty Name="payment" Relationship="ComplaintsService.Complaints_payment" FromRole="Complaints" ToRole="Payments"/>
+        <NavigationProperty Name="to_code" Relationship="ComplaintsService.Complaints_to_code" FromRole="Complaints" ToRole="Codes"/>
       </EntityType>
       <EntityType Name="OrderItems">
         <Key>
@@ -182,6 +187,18 @@
       <Association Name="Complaints_payment">
         <End Role="Complaints" Type="ComplaintsService.Complaints" Multiplicity="*"/>
         <End Role="Payments" Type="ComplaintsService.Payments" Multiplicity="0..1"/>
+      </Association>
+      <Association Name="Complaints_to_code">
+        <End Role="Complaints" Type="ComplaintsService.Complaints" Multiplicity="*"/>
+        <End Role="Codes" Type="ComplaintsService.Codes" Multiplicity="0..1"/>
+        <ReferentialConstraint>
+          <Principal Role="Codes">
+            <PropertyRef Name="CODE"/>
+          </Principal>
+          <Dependent Role="Complaints">
+            <PropertyRef Name="code"/>
+          </Dependent>
+        </ReferentialConstraint>
       </Association>
       <Association Name="Orders_items">
         <End Role="Orders" Type="ComplaintsService.Orders" Multiplicity="*"/>
