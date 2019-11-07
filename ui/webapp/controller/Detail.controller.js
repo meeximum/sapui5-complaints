@@ -74,6 +74,80 @@ sap.ui.define([
 			}
 		},
 
+		onReasonValueHelpRequest: function () {
+			this._oValueHelpDialog = sap.ui.xmlfragment("com.egger.complaints.ui.view.ValueHelpDialog", this);
+			this.getView().addDependent(this._oValueHelpDialog);
+
+			this._oValueHelpDialog.open();
+		},
+
+		onValueHelpOkPress: function (oEvent) {
+			var oContextObject = oEvent.getParameters().selectedItem.getBindingContext().getObject();
+
+			var sPath = this.getView().getBindingContext() + "/code";
+			this.getModel().setProperty(sPath, oContextObject.CODE);
+
+			this.byId("id_reasonInput").setValue(oContextObject.CODE);
+			this.byId("id_reasonText").setText(oContextObject.name);
+		},
+
+		onValueHelpCancelPress: function () {
+			this._oValueHelpDialog.close();
+		},
+
+		onValueHelpAfterClose: function () {
+			this._oValueHelpDialog.destroy();
+		},
+
+		onChangeDescription: function (oEvent) {
+			var sPath = oEvent.getSource().getBindingContext().getPath() + "/description";
+			var sValue = oEvent.getParameter("value");
+			this.getModel().setProperty(sPath, sValue);
+		},
+
+		onSendToEgger: function () {
+			sap.m.MessageBox.confirm(this.getResourceBundle().getText("confirmSend"), {
+				onClose: function (oAction) {
+					if (oAction === sap.m.MessageBox.Action.OK) {
+						sap.m.MessageToast.show("Not implemented yet 😊");
+						// implemented via action in CDS
+					}
+				}.bind(this)
+			});
+		},
+
+		onSaveChanges: function () {
+			var oModel = this.getModel();
+			if (!oModel.hasPendingChanges()) {
+				sap.m.MessageToastshow(this.getResourceBundle().getText("noPendingChanges"));
+			} else {
+				oModel.submitChanges();
+			}
+		},
+
+		onResetChanges: function () {
+			var oModel = this.getModel();
+			if (oModel.hasPendingChanges()) {
+				oModel.resetChanges();
+			}
+		},
+
+		onPostComment: function (oEvent) {
+			var sValue = oEvent.getParameter("value"); 
+			var sComplaint = this.getView().getBindingContext().getObject().ID;
+			
+			var oEntity = {
+				"complaint": sComplaint,
+				"comment": sValue
+			};
+			
+			this.getModel().create("/Comments", oEntity, {
+				error: function() {
+					sap.m.MessageToast.show(this.getResourceBundle().getText("commentError"));
+				}.bind(this)
+			});
+		},
+
 		/* =========================================================== */
 		/* begin: internal methods                                     */
 		/* =========================================================== */

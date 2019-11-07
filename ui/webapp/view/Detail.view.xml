@@ -25,16 +25,16 @@
 										<form:formElements>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Materialnr." design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>matnr}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
-													<Input value="{matnr}" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
+													<Input value="{matnr}" type="Text" showValueHelp="false" enabled="false" visible="true" width="auto" valueHelpOnly="false" required="false"
 														valueStateText="Invalid entry"/>
 												</form:fields>
 											</form:FormElement>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Materialkurztext" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>makt}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
 													<Input value="{makt}" type="Text" showValueHelp="false" enabled="false" visible="true" width="auto" valueHelpOnly="false" required="false"
@@ -43,29 +43,31 @@
 											</form:FormElement>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Materialnr. (Kunde)" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>matnr_cust}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
-													<Input value="{kmatnr}" type="Text" showValueHelp="false" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
+													<Input value="{kmatnr}" type="Text" showValueHelp="false" enabled="false" visible="true" width="auto" valueHelpOnly="false" required="false"
 														valueStateText="Invalid entry" maxLength="0"/>
 												</form:fields>
 											</form:FormElement>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Grund" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>reason}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
-													<Input type="Text" showValueHelp="true" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false"
-														valueStateText="Invalid entry" maxLength="0" valueHelpRequest="_onInputValueHelpRequest"/>
+													<Input id="id_reasonInput" type="Text" showValueHelp="true" enabled="true" visible="true" width="auto" valueHelpOnly="true" required="false"
+														valueStateText="Invalid entry" maxLength="0" valueHelpRequest="onReasonValueHelpRequest" value="{code}"/>
+													<Text id="id_reasonText"/>
 												</form:fields>
 											</form:FormElement>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Beschreibung" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>reclaDescription}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit"
+														visible="true"/>
 												</form:label>
 												<form:fields>
 													<TextArea value="{description}" rows="2" cols="20" maxLength="0" wrapping="None" enabled="true" required="false"
-														valueStateText="Invalid entry" visible="true"/>
+														valueStateText="Invalid entry" visible="true" change="onChangeDescription"/>
 												</form:fields>
 											</form:FormElement>
 										</form:formElements>
@@ -82,14 +84,15 @@
 					<IconTabFilter icon="sap-icon://attachment" iconColor="Neutral" text="" count="" design="Vertical" showAll="false" textDirection="Inherit"
 						enabled="true" visible="true" iconDensityAware="false">
 						<content>
-							<UploadCollection uploadEnabled="false" numberOfAttachmentsText="" showSeparators="All" items="{attachments}"
+							<UploadCollection uploadEnabled="true" numberOfAttachmentsText="" showSeparators="All" items="{attachments}"
 								noDataText="{i18n>noAttachments}" visible="true" maximumFileSize="10"
 								mimeType="image/jpeg,image/gif,image/png,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 								multiple="false" uploadUrl="" sameFilenameAllowed="false" mode="SingleSelectMaster" uploadComplete="_onUploadCollectionUploadComplete"
 								change="_onUploadCollectionChange" typeMissmatch="_onUploadCollectionTypeMissmatch" fileSizeExceed="_onUploadCollectionFileSizeExceed">
 								<headerParameters/>
 								<items>
-									<UploadCollectionItem fileName="{filename}" mimeType="" uploadedDate="" url="" press="" deletePress="" enableEdit="false" visibleEdit="false"></UploadCollectionItem>
+									<UploadCollectionItem fileName="{filename}" mimeType="" uploadedDate="" url="" press="" deletePress="" enableEdit="false"
+										visibleEdit="false"></UploadCollectionItem>
 								</items>
 								<parameters/>
 								<toolbar/>
@@ -107,7 +110,7 @@
 										<form:formElements>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Gutschrift" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>paymentNo}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
 													<Text text="{payment/ID}" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
@@ -116,7 +119,7 @@
 											</form:FormElement>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Betrag" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>paymentAmount}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
 													<Text text="{path: 'payment/amount', type: 'sap.ui.model.type.Float', formatOptions: { maxFractionDigits: 2 }} {payment/currency}"
@@ -125,7 +128,7 @@
 											</form:FormElement>
 											<form:FormElement visible="true">
 												<form:label>
-													<Label text="Auszahlungsdatum" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+													<Label text="{i18n>paymentDate}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
 												</form:label>
 												<form:fields>
 													<Text text="{path: 'payment/paymentAt', type: 'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'short' }}" width="auto"
@@ -146,9 +149,10 @@
 					<IconTabFilter icon="sap-icon://notification-2" iconColor="Neutral" text="" count="" design="Vertical" showAll="false"
 						textDirection="Inherit" enabled="true" visible="true" iconDensityAware="false">
 						<content>
-							<FeedInput showIcon="true" icon="" placeholder="Post something here" enabled="true" visible="true" maxLength="0" buttonTooltip="Submit"/>
+							<FeedInput showIcon="true" icon="" placeholder="{i18n>feedInputPlaceholder}" enabled="true" visible="true" maxLength="0"
+								buttonTooltip="Submit" post="onPostComment"/>
 							<List width="100%" growing="false" growingThreshold="20" growingScrollToLoad="false" backgroundDesign="Solid"
-								items="{path:'comments', templateShareable:true}">
+								items="{path:'comments', templateShareable:true}" noDataText="{i18n>noComments}">
 								<items>
 									<FeedListItem icon="" sender="{createdBy}" text="{comment}" info=""
 										timestamp="{path: 'createdAt', type: 'sap.ui.model.type.DateTime', formatOptions: { UTC: true, style: 'short' }}"/>
@@ -157,10 +161,6 @@
 						</content>
 					</IconTabFilter>
 				</items>
-				<content>
-					<Text text="Tab Bar Content goes here ..." width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit"
-						visible="true"/>
-				</content>
 			</IconTabBar>
 		</semantic:content>
 		<!--Semantic ShareMenu Buttons-->
@@ -179,17 +179,13 @@
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press=".toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
 		<semantic:positiveAction>
-			<semantic:PositiveAction text="Speichern" press="onSave"/>
+			<semantic:PositiveAction text="{i18n>saveChanges}" press="onSaveChanges"/>
 		</semantic:positiveAction>
-
 		<semantic:negativeAction>
-			<semantic:NegativeAction text="Abbrechen" press="onCancel"/>
+			<semantic:NegativeAction text="{i18n>resetChanges}" press="onResetChanges"/>
 		</semantic:negativeAction>
-		<!--
 		<semantic:footerCustomActions>
-			<Button text="Speichern" type="Emphasized" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
-			<Button text="Abbrechen" type="Default" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false"/>
+			<Button icon="sap-icon://send-task" text="{i18n>sendToEgger}" press="onSendToEgger"/>
 		</semantic:footerCustomActions>
-		-->
 	</semantic:SemanticPage>
 </mvc:View>
