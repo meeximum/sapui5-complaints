@@ -98,6 +98,7 @@ public class ComplaintsService {
 			code = (String) json.query("/predictions/0/results/0/label");
 			// Double score = (Double)json.query("/predictions/0/results/0/score");
 		} else {
+			
 			JSONObject json2 = Unirest.post(
 					"https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
 					.header("content-type", "application/json")
@@ -106,8 +107,18 @@ public class ComplaintsService {
 					.header("cache-control", "no-cache")
 					.body("{ \"payload\": { \"textSnippet\": { \"content\": \"Preis falsch\", \"mime_type\": \"text/plain\" } } }")
 					.asJson().getBody().getObject();
-
+			/*		
+			String json2 = Unirest.post("https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
+    			  .header("content-type", "application/json")
+    			  .header("authorization", "Bearer ya29.c.Kl6wBx-vkdVRLUhth34YgZ2FGZ407J2OphqN0oEM4zxUAmTVwjWGw5uwdh96rMbQRro9mSO0c44FnhCl7SFONERHsJxX33fvkqCjdNnF7jV0B-tU1UKeTCRzdRJI6d_R")
+    			  .header("cache-control", "no-cache")
+    			  .body("{ \"payload\": { \"textSnippet\": { \"content\": \"" + text + "\", \"mime_type\": \"text/plain\" } } }")
+    			  .asString()
+      			  .getBody();
+    		*/
+			//LOG.error(json2);
 			code = (String) json2.query("/payload/0/displayName");
+			LOG.error("Code:" + code);
 			//Double score = (Double) json2.query("/payload/0/classification/score");
 		}
 
