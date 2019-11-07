@@ -109,8 +109,22 @@ sap.ui.define([
 			sap.m.MessageBox.confirm(this.getResourceBundle().getText("confirmSend"), {
 				onClose: function (oAction) {
 					if (oAction === sap.m.MessageBox.Action.OK) {
-						sap.m.MessageToast.show("Not implemented yet 😊");
 						// implemented via action in CDS
+						this.getModel().callFunction("/setStatus", {
+							method: "POST",
+							urlParameters: {
+								complaint: this.getView().getBindingContext().getObject().ID,
+								status: "E0001"
+							},
+							refreshAfterChange: true,
+							success: function() {
+								sap.m.MessageToast.show(this.getResourceBundle().getText("statusChangeSuccess"));
+							}, 
+							error: function(oError){
+								console.log(oError);
+								sap.m.MessageToast.show(this.getResourceBundle().getText("statusChangeError"));
+							}.bind(this)
+						});
 					}
 				}.bind(this)
 			});
