@@ -57,7 +57,7 @@
 												<form:fields>
 													<Input id="id_reasonInput" type="Text" showValueHelp="true" enabled="true" visible="true" width="auto" valueHelpOnly="true" required="false"
 														valueStateText="Invalid entry" maxLength="0" valueHelpRequest="onReasonValueHelpRequest" value="{code}"/>
-													<Text id="id_reasonText"/>
+													<Text id="id_reasonText" text="{to_code/name}"/>
 												</form:fields>
 											</form:FormElement>
 											<form:FormElement visible="true">

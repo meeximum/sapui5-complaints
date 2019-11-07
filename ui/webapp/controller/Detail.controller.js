@@ -87,7 +87,7 @@ sap.ui.define([
 			var sPath = this.getView().getBindingContext() + "/code";
 			this.getModel().setProperty(sPath, oContextObject.CODE);
 
-			this.byId("id_reasonInput").setValue(oContextObject.CODE);
+			//this.byId("id_reasonInput").setValue(oContextObject.CODE);
 			this.byId("id_reasonText").setText(oContextObject.name);
 		},
 
@@ -187,7 +187,7 @@ sap.ui.define([
 				path: sObjectPath,
 				//D068045
 				parameters: {
-					expand: "payment"
+					expand: "payment,to_code"
 				},
 				//D068045 - end
 				events: {
