@@ -1,0 +1,109 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.egger.complaints.ui.controller.Create"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:form="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page title="{i18n>wizardTitle}">
+				<content>
+					<Wizard finishButtonText="{i18n>wizardFinishText}" width="auto" height="auto" complete="onWizardComplete" id="wizard">
+						<steps>
+							<WizardStep id="step1" title="{i18n>orderHistory}" icon="" validated="false">
+								<content>
+									<List id="ordersTable" mode="SingleSelectLeft" width="100%" headerText="Header" footerText="" backgroundDesign="Solid" showSeparators="All" growing="true"
+										growingThreshold="20" growingScrollToLoad="true" visible="true" items="{path:'/Orders', templateShareable:true}">
+										<infoToolbar>
+											<Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+												<content>
+													<Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+												</content>
+											</Toolbar>
+										</infoToolbar>
+										<headerToolbar>
+											<Toolbar enabled="true" visible="true" width="" design="Solid">
+												<content>
+													<SearchField placeholder="{i18n>search}" showSearchButton="true" visible="true" width="100%"/>
+												</content>
+											</Toolbar>
+										</headerToolbar>
+										<items>
+											<ObjectListItem intro="" title="{AUFNR}" number="" numberUnit="" numberState="None" type="Active" showMarkers="false"
+												press="onOrderPress">
+												<attributes>
+													<ObjectAttribute title="{i18n>orderDate}" text="{path:'createdAt', formatter:'.formatter.dateFormatter'}" active="false" visible="true"/>
+													<ObjectAttribute title="{i18n>order}" text="{purchaseOrder}" active="false" visible="true"/>
+												</attributes>
+												<firstStatus/>
+												<secondStatus/>
+											</ObjectListItem>
+										</items>
+									</List>
+								</content>
+							</WizardStep>
+							<WizardStep id="step2" title="{i18n>orderPositions}" icon="" validated="false">
+								<content>
+									<List id="itemsTable" mode="SingleSelectLeft" width="100%" footerText="" backgroundDesign="Solid"
+										showSeparators="All" growing="true" growingThreshold="20" growingScrollToLoad="true" visible="true"
+										items="{path:'items', templateShareable:true}">
+										<infoToolbar>
+											<Toolbar width="100%" height="auto" design="Auto" visible="false" enabled="true">
+												<content>
+													<Label text="Label" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+												</content>
+											</Toolbar>
+										</infoToolbar>
+										<headerToolbar/>
+										<items>
+											<ObjectListItem intro="" title="{POSNR}: {makt}"
+												number="{path: 'quantity', type: 'sap.ui.model.type.Float', formatOptions: { maxFractionDigits: 2 }}" numberUnit="{unit}" numberState="None"
+												type="Active" showMarkers="false" press="onOrderItemPress">
+												<attributes>
+													<ObjectAttribute title="{i18n>matnr}" text="{matnr}" active="false" visible="true"/>
+												</attributes>
+												<firstStatus/>
+												<secondStatus/>
+											</ObjectListItem>
+										</items>
+									</List>
+								</content>
+							</WizardStep>
+							<WizardStep title="Details" validated="false" id="step3">
+								<content>
+									<form:Form width="100%" editable="true" visible="true">
+										<form:title/>
+										<form:formContainers>
+											<form:FormContainer visible="true">
+												<form:formElements>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="{i18n>reclaQuantity}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+														</form:label>
+														<form:fields>
+															<Input value="{path: 'quantity', type: 'sap.ui.model.type.Float', formatOptions: { maxFractionDigits: 2 }}" type="Number" showValueHelp="false"
+																change="onInputChange" id="id_quantity" enabled="true" visible="true" width="auto" valueHelpOnly="false" required="false" valueStateText="Invalid entry" maxLength="0"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="{i18n>reclaDescription}" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+														</form:label>
+														<form:fields>
+															<TextArea value="{description}" rows="2" cols="20" maxLength="0" wrapping="None" enabled="true" required="false"
+																valueStateText="Invalid entry" id="id_description" visible="true" change="onInputChange" />
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+												<form:title/>
+											</form:FormContainer>
+										</form:formContainers>
+										<form:layout>
+											<form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+										</form:layout>
+									</form:Form>
+								</content>
+							</WizardStep>
+						</steps>
+					</Wizard>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
