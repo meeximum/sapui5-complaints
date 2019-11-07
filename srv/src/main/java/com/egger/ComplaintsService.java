@@ -24,6 +24,9 @@ import org.slf4j.Logger;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ComplaintsService {
 
 	private static final Logger LOG = CloudLoggerFactory.getLogger(ComplaintsService.class.getName());
@@ -88,6 +91,7 @@ public class ComplaintsService {
 		String entityId = (String) actionRequest.getParameters().get("complaint");
 
 		String code = null;
+		/*
 		if (useSap) {
 			JSONObject json = Unirest.post(
 					"https://example.com/sap_api/api/v2/text/classification/models/complaint-01/versions/1")
@@ -103,24 +107,34 @@ public class ComplaintsService {
 					"https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
 					.header("content-type", "application/json")
 					.header("authorization",
-							"Bearer ya29.c.Kl6vB_Cm97MLRUoE5C4ct7xAPMH0-7xP7rKPe-4c7JJ5pKPEy_csU0hw0uheeSNM-XcIe5BG3njwsxMbXs4Pb7FHKkQTLHs_Ynn8hN-P_uDeca5LK-cvuwnZ04er8oGe")
+							"Bearer ya29.c.Kl6wBx-vkdVRLUhth34YgZ2FGZ407J2OphqN0oEM4zxUAmTVwjWGw5uwdh96rMbQRro9mSO0c44FnhCl7SFONERHsJxX33fvkqCjdNnF7jV0B-tU1UKeTCRzdRJI6d_R")
 					.header("cache-control", "no-cache")
-					.body("{ \"payload\": { \"textSnippet\": { \"content\": \"Preis falsch\", \"mime_type\": \"text/plain\" } } }")
+					.body("{ \"payload\": { \"textSnippet\": { \"content\": \"" + text + "\", \"mime_type\": \"text/plain\" } } }")
 					.asJson().getBody().getObject();
-			/*		
-			String json2 = Unirest.post("https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
+			*/	
+			String auth = readCredentialsFromVCAP(); // "Bearer ya29.c.Kl6wBx-vkdVRLUhth34YgZ2FGZ407J2OphqN0oEM4zxUAmTVwjWGw5uwdh96rMbQRro9mSO0c44FnhCl7SFONERHsJxX33fvkqCjdNnF7jV0B-tU1UKeTCRzdRJI6d_R";
+			
+			LOG.error("Token:" + auth);
+			LOG.error("Text:" + text);
+			
+			String json = Unirest.post("https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
     			  .header("content-type", "application/json")
-    			  .header("authorization", "Bearer ya29.c.Kl6wBx-vkdVRLUhth34YgZ2FGZ407J2OphqN0oEM4zxUAmTVwjWGw5uwdh96rMbQRro9mSO0c44FnhCl7SFONERHsJxX33fvkqCjdNnF7jV0B-tU1UKeTCRzdRJI6d_R")
+    			  .header("authorization", auth)
     			  .header("cache-control", "no-cache")
-    			  .body("{ \"payload\": { \"textSnippet\": { \"content\": \"" + text + "\", \"mime_type\": \"text/plain\" } } }")
+    			  .body("{ \"payload\": { \"textSnippet\": { \"content\": \"Preis ist falsch\", \"mime_type\": \"text/plain\" } } }")
     			  .asString()
       			  .getBody();
-    		*/
-			//LOG.error(json2);
-			code = (String) json2.query("/payload/0/displayName");
+    		
+			LOG.error(json);
+			//code = (String) json2.query("/payload/0/displayName");
+			
+			Pattern p = Pattern.compile("\"displayName\":(.*)");
+			Matcher m = p.matcher(json);
+		    code = (m.find() && m.group(1) != null ? m.group(1) : "").trim().replace("\"", "");
+			
 			LOG.error("Code:" + code);
 			//Double score = (Double) json2.query("/payload/0/classification/score");
-		}
+		//}
 
 		DataSourceHandler handler = extensionHelper.getHandler();
 		List<String> complaintIDs = new ArrayList<String>();
@@ -168,4 +182,16 @@ public class ComplaintsService {
 	 * 1000).buildEntityData("Orders"); modifiedList.add(ex); } return
 	 * QueryResponse.setSuccess().setData(modifiedList).response(); }
 	 */
+	 
+	 private String readCredentialsFromVCAP() {
+        String vcapString = System.getenv("VCAP_SERVICES");
+        
+        org.json.JSONObject vcap = new org.json.JSONObject(vcapString);
+        org.json.JSONArray jArrayUserProvided = vcap.getJSONArray("user-provided");
+        String credentials = jArrayUserProvided.getJSONObject(0).getJSONObject("credentials").getString("auth");
+        
+        LOG.error(credentials);
+        return credentials;
+    }
+
 }
