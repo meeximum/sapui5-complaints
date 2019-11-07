@@ -673,6 +673,10 @@
         "text": {
           "@cds.persistence.name": "TEXT",
           "type": "cds.String"
+        },
+        "sap": {
+          "@cds.persistence.name": "SAP",
+          "type": "cds.Boolean"
         }
       }
     },
