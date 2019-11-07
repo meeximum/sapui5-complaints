@@ -676,7 +676,7 @@
         },
         "sap": {
           "@cds.persistence.name": "SAP",
-          "type": "cds.Boolean"
+          "type": "cds.String"
         }
       }
     },

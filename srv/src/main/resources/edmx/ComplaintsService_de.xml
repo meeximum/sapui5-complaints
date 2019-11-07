@@ -26,7 +26,7 @@
         <FunctionImport Name="setCode" m:HttpMethod="POST">
           <Parameter Name="complaint" Type="Edm.Guid" Mode="In" Nullable="true"/>
           <Parameter Name="text" Type="Edm.String" Mode="In" Nullable="true"/>
-          <Parameter Name="sap" Type="Edm.Boolean" Mode="In" Nullable="true"/>
+          <Parameter Name="sap" Type="Edm.String" Mode="In" Nullable="true"/>
         </FunctionImport>
         <FunctionImport Name="setStatus" m:HttpMethod="POST">
           <Parameter Name="complaint" Type="Edm.Guid" Mode="In" Nullable="true"/>

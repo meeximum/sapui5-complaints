@@ -82,7 +82,8 @@ public class ComplaintsService {
 
 	@Action(Name = "setCode", serviceName = "ComplaintsService")
 	public OperationResponse setCodeAction(OperationRequest actionRequest, ExtensionHelper extensionHelper) {
-		Boolean useSap = (Boolean) actionRequest.getParameters().get("sap");
+		String useSapAsString = (String) actionRequest.getParameters().get("sap");
+		Boolean useSap = "true".equalsIgnoreCase(useSapAsString);
 		String text = (String) actionRequest.getParameters().get("text");
 		String entityId = (String) actionRequest.getParameters().get("complaint");
 

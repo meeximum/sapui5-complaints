@@ -11,5 +11,5 @@ service ComplaintsService {
   
   action setStatus (complaint:Complaints.ID, status:String);
   
-  action setCode (complaint:Complaints.ID, text:String, sap:Boolean);
+  action setCode (complaint:Complaints.ID, text:String, sap:String);
 }
