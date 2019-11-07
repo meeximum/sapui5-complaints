@@ -112,15 +112,14 @@ sap.ui.define([
 				"status": "E0000"
 			}, {
 				success: function (oData) {
-					// this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-					this.getRouter().navTo("object", {
-						objectId : oData.ID
-					}, true);
 					sap.ui.getCore()._startMLProcessing({
 						complaint: oData.ID,
 						text: sDescription,
 						sap: false
-					});
+					}, this.getModel());
+					this.getRouter().navTo("object", {
+						objectId : oData.ID
+					}, true);
 				}.bind(this),
 				error: function (oError) {
 					sap.m.MessageToast.show(oError);

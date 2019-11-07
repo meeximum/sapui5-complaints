@@ -86,9 +86,9 @@ sap.ui.define([
 			this._showCreate();
 		},
 
-		_startMLProcessing: function (oParameters) {
+		_startMLProcessing: function (oParameters, oModel) {
 			sap.ui.getCore()._mlProcessingPromise = new Promise(function (resolve, reject) {
-				this.getModel().callFunction("setCode", {
+				oModel.callFunction("/setCode", {
 					method: "POST",
 					urlParameters: oParameters,
 					success: function (oData) {
@@ -98,7 +98,7 @@ sap.ui.define([
 						reject(oError);
 					}
 				});
-			});
+			}.bind(this));
 		},
 
 		/**
