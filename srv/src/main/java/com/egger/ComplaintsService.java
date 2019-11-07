@@ -99,7 +99,7 @@ public class ComplaintsService {
 			// Double score = (Double)json.query("/predictions/0/results/0/score");
 		} else {
 			JSONObject json2 = Unirest.post(
-					"https://automl.googleapis.com/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
+					"/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
 					.header("content-type", "application/json")
 					.header("authorization",
 							"Bearer ya29.c.Kl6vB_Cm97MLRUoE5C4ct7xAPMH0-7xP7rKPe-4c7JJ5pKPEy_csU0hw0uheeSNM-XcIe5BG3njwsxMbXs4Pb7FHKkQTLHs_Ynn8hN-P_uDeca5LK-cvuwnZ04er8oGe")

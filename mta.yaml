@@ -19,6 +19,7 @@ modules:
           name: srv_api
           url: '~{url}'
       - name: uaa_complaints
+      - name: GOOGLE_ML
   - name: complaints_ui_deployer
     type: com.sap.html5.application-content
     path: complaints_ui_deployer
@@ -93,9 +94,14 @@ resources:
     parameters:
       service-name: s3-service-attachments
     properties:
-      secret_access_key: ~{secret_access_key}
-      access_key_id: ~{access_key_id}
-      bucket: ~{bucket}
-      host: ~{host}
-      region: ~{region}
-      username: ~{username}
+      secret_access_key: '~{secret_access_key}'
+      access_key_id: '~{access_key_id}'
+      bucket: '~{bucket}'
+      host: '~{host}'
+      region: '~{region}'
+      username: '~{username}'
+  - name: GOOGLE_ML
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite

@@ -13,6 +13,10 @@
       "csrfProtection": false
     },
     {
+		"source": "^/v1beta1/(.*)",
+		"destination": "GOOGLE_ML"
+	},
+    {
       "source": "^(.*)$",
       "target": "$1",
       "service": "html5-apps-repo-rt",
