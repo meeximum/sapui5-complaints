@@ -39,7 +39,7 @@
 							<ObjectAttribute title="{i18n>deliveryNo}" text="{delivery}" active="false" visible="true"/>
 						</attributes>
 						<firstStatus>
-							<ObjectStatus title="" text="{status}" state="None" icon="sap-icon://warning2" visible="true"/>
+							<ObjectStatus title="" text="{status}" state="{path: 'status', formatter: '.formatter.statusFormatter'}" icon="{path: 'status', formatter: '.formatter.iconStatusFormatter'}" visible="true"/>
 						</firstStatus>
 						<secondStatus/>
 					</ObjectListItem>
