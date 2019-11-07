@@ -663,6 +663,19 @@
       },
       "$syntax": "projection"
     },
+    "ComplaintsService.setCode": {
+      "kind": "action",
+      "params": {
+        "complaint": {
+          "@cds.persistence.name": "COMPLAINT",
+          "type": "cds.UUID"
+        },
+        "text": {
+          "@cds.persistence.name": "TEXT",
+          "type": "cds.String"
+        }
+      }
+    },
     "ComplaintsService.setStatus": {
       "kind": "action",
       "params": {

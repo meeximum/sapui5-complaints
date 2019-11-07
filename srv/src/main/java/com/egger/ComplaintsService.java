@@ -1,9 +1,9 @@
 package com.egger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
 import com.sap.cloud.sdk.service.prov.api.DataSourceHandler;
@@ -20,6 +20,9 @@ import com.sap.cloud.sdk.service.prov.api.response.ErrorResponse;
 import com.sap.cloud.sdk.service.prov.api.response.OperationResponse;
 
 import org.slf4j.Logger;
+
+import kong.unirest.Unirest;
+import kong.unirest.json.JSONObject;
 
 public class ComplaintsService {
 
@@ -72,6 +75,46 @@ public class ComplaintsService {
 			LOG.error(e.getMessage());
 			ErrorResponse err = ErrorResponse.getBuilder()
 					.setMessage("Faild to update status. Check log for more details.").setStatusCode(500).response();
+			return OperationResponse.setError(err);
+		}
+		return OperationResponse.setSuccess().response();
+	}
+	
+	@Action(Name = "setCode", serviceName = "ComplaintsService")
+	public OperationResponse setCodeAction(OperationRequest actionRequest, ExtensionHelper extensionHelper) {
+		String text = (String) actionRequest.getParameters().get("text");
+		String entityId = (String) actionRequest.getParameters().get("complaint");
+		
+		JSONObject json = Unirest.post("https://mlfproduction-text-classifier.cfapps.eu10.hana.ondemand.com/api/v2/text/classification/models/complaint-01/versions/1")
+    			  .header("authorization", "Bearer eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vbW9kZTJnYXJhZ2UuYXV0aGVudGljYXRpb24uZXUxMC5oYW5hLm9uZGVtYW5kLmNvbS90b2tlbl9rZXlzIiwia2lkIjoia2V5LWlkLTEiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiIyMTQ3Y2Q1Nzk2NjQ0YThmODdiMjNhMTI3NjhkMGMxYyIsImV4dF9hdHRyIjp7ImVuaGFuY2VyIjoiWFNVQUEiLCJ6ZG4iOiJtb2RlMmdhcmFnZSIsInNlcnZpY2VpbnN0YW5jZWlkIjoiZTBhNDcwY2MtNmZlNy00ODYzLWJkODctODhhNzYwZmQ4NzlhIn0sInN1YiI6InNiLWUwYTQ3MGNjLTZmZTctNDg2My1iZDg3LTg4YTc2MGZkODc5YSFiODA0MHxtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwIiwiYXV0aG9yaXRpZXMiOlsibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5kYXRhbWFuYWdlbWVudC5yZWFkIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5yZXRyYWluc2VydmljZS5yZWFkIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5tb2RlbGRlcGxveW1lbnQuYWxsIiwidWFhLnJlc291cmNlIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5tb2RlbHNlcnZpY2UucmVhZCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAuc3RvcmFnZWFwaS5hbGwiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLm1laC5hbGwiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLmRhdGFtYW5hZ2VtZW50LndyaXRlIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5mdW5jdGlvbmFsc2VydmljZS5hbGwiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLnJlc291cmNlcGxhbnNlcnZpY2UuYWxsIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5tb2RlbHJlcG8ucmVhZCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAucmV0cmFpbnNlcnZpY2Uud3JpdGUiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLm1vZGVsbWV0ZXJpbmcucmVhZCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAubW9kZWxyZXBvLndyaXRlIl0sInNjb3BlIjpbIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAuZGF0YW1hbmFnZW1lbnQucmVhZCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAucmV0cmFpbnNlcnZpY2UucmVhZCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAubW9kZWxkZXBsb3ltZW50LmFsbCIsInVhYS5yZXNvdXJjZSIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAubW9kZWxzZXJ2aWNlLnJlYWQiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLnN0b3JhZ2VhcGkuYWxsIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5tZWguYWxsIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5kYXRhbWFuYWdlbWVudC53cml0ZSIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAuZnVuY3Rpb25hbHNlcnZpY2UuYWxsIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5yZXNvdXJjZXBsYW5zZXJ2aWNlLmFsbCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAubW9kZWxyZXBvLnJlYWQiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLnJldHJhaW5zZXJ2aWNlLndyaXRlIiwibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5tb2RlbG1ldGVyaW5nLnJlYWQiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLm1vZGVscmVwby53cml0ZSJdLCJjbGllbnRfaWQiOiJzYi1lMGE0NzBjYy02ZmU3LTQ4NjMtYmQ4Ny04OGE3NjBmZDg3OWEhYjgwNDB8bWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MCIsImNpZCI6InNiLWUwYTQ3MGNjLTZmZTctNDg2My1iZDg3LTg4YTc2MGZkODc5YSFiODA0MHxtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwIiwiYXpwIjoic2ItZTBhNDcwY2MtNmZlNy00ODYzLWJkODctODhhNzYwZmQ4NzlhIWI4MDQwfG1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAiLCJncmFudF90eXBlIjoiY2xpZW50X2NyZWRlbnRpYWxzIiwicmV2X3NpZyI6IjM0MTRiZTlhIiwiaWF0IjoxNTczMTM3MTE4LCJleHAiOjE1NzMxODAzMTgsImlzcyI6Imh0dHA6Ly9tb2RlMmdhcmFnZS5sb2NhbGhvc3Q6ODA4MC91YWEvb2F1dGgvdG9rZW4iLCJ6aWQiOiJmYzFiNTBkZC0wZWM3LTQ0MzYtYTdhMy02NzM0M2I0YWFkMjkiLCJhdWQiOlsibWwtZm91bmRhdGlvbi14c3VhYS1zdGQhYjU0MC5tb2RlbHNlcnZpY2UiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLm1laCIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAucmV0cmFpbnNlcnZpY2UiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLm1vZGVsZGVwbG95bWVudCIsInVhYSIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAuZnVuY3Rpb25hbHNlcnZpY2UiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLmRhdGFtYW5hZ2VtZW50Iiwic2ItZTBhNDcwY2MtNmZlNy00ODYzLWJkODctODhhNzYwZmQ4NzlhIWI4MDQwfG1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLnN0b3JhZ2VhcGkiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLnJlc291cmNlcGxhbnNlcnZpY2UiLCJtbC1mb3VuZGF0aW9uLXhzdWFhLXN0ZCFiNTQwLm1vZGVscmVwbyIsIm1sLWZvdW5kYXRpb24teHN1YWEtc3RkIWI1NDAubW9kZWxtZXRlcmluZyJdfQ.sWLpExw-kW77PmvRD63crYZkEyax36bSV4__npZHqiZmHKWOabPgPatDg96M9e0TJRtHDzp5skJ5emDadYMKISpjkAuRbY_suMpnv8MH-M1Xgu4x68RWKdeSs4K9-nqsnd8FEgl0r45jdxZaD7TONMJgXLipZuEOOt_VevfPo9GMVe-YyWV9KJmFhfi8s8lm-3vxxgbXmXR1W_s3yCAbJg3s0CnnWH2ZafZ8IunfYh5JYe9R9XCkRA67d1CJWAU6QFvW3FtQC1Xs5fWIDxtYnP67VodbfDH_vLwNpdJ4GCeyF6vKz3Vhu2bhTQONGCcHZCG-MsHuWWmD0BTm3bT91xjdWzP43GLy8AD0kVTdBMdXnBF-PsKrnR3-AWcrRYoEWWkSow1Irbc_EoH_8qIMF7rk3fCj4LXnLrC_-geFcMoDYwz1XIJy6nXQD0F5Nd3HVFlyphqgYnt0ejX0IWpgxQACSdPfHh01ZJvyxC0nW80R2I4Nz2l9AWTH-jEyKUVTKmu3PpyzE8MZSmdcAZ6_yd4NnhrziSuE49EX4o5pmSR0SUizDh0WvTWwfSJznxMmln-ArPCFJCcQYqsnRDMfmLobP5e9JkXGe3HnJR9nq1YhjeMzfTDquq30x4ZTdWTKx5ASLP3PwmSrABFgU-2TNVfgBqkRHP_FHDloRRxivfs")
+    			  .header("cache-control", "no-cache")
+    			  .field("texts", text)
+      			  .asJson()
+      			  .getBody()
+      			  .getObject();
+    	
+    	String code = (String)json.query("/predictions/0/results/0/label");
+    	//Double score = (Double)json.query("/predictions/0/results/0/score");
+		
+		DataSourceHandler handler = extensionHelper.getHandler();
+		List<String> complaintIDs = new ArrayList<String>();
+		complaintIDs.add("ID");
+		Map<String, Object> keysForCreate = new HashMap<String, Object>();
+		keysForCreate.put("ID", entityId);
+		keysForCreate.put("code", code);
+		// EntityData entityDataComplaint = handler.executeRead("Complaints",
+		// keysForUpdate, complaintAttributes);
+		EntityData entityDataComplaint = EntityData.createFromMap(keysForCreate, complaintIDs, "Complaints");
+
+		try {
+			Map<String, Object> keysForUpdate = new HashMap<String, Object>();
+			keysForUpdate.put("ID", entityId);
+			handler.executeUpdate(entityDataComplaint, keysForUpdate, false);
+		} catch (DatasourceException e) {
+			e.printStackTrace();
+			LOG.error(e.getMessage());
+			ErrorResponse err = ErrorResponse.getBuilder()
+					.setMessage("Faild to update code. Check log for more details.").setStatusCode(500).response();
 			return OperationResponse.setError(err);
 		}
 		return OperationResponse.setSuccess().response();

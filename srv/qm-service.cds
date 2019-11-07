@@ -9,6 +9,7 @@ service ComplaintsService {
   entity Payments as projection on qm.Payments;
   entity Comments as projection on qm.Comments;
   
-  
   action setStatus (complaint:Complaints.ID, status:String);
+  
+  action setCode (complaint:Complaints.ID, text:String);
 }
