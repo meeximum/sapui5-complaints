@@ -1,9 +1,11 @@
 sap.ui.define([
 	"./BaseController",
 	"sap/ui/model/json/JSONModel",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
 	"../model/formatter",
 	"sap/m/library"
-], function (BaseController, JSONModel, formatter, mobileLibrary) {
+], function (BaseController, JSONModel, Filter, FilterOperator, formatter, mobileLibrary) {
 	"use strict";
 
 	// shortcut for sap.m.URLHelper
@@ -32,6 +34,17 @@ sap.ui.define([
 			this.setModel(oViewModel, "detailView");
 
 			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
+			
+			if (sap.ui.getCore()._mlProcessingPromise) {
+				var oReasonInput = this.byId("id_reasonInput");
+				oReasonInput.setBusy(true);
+				sap.ui.getCore()._mlProcessingPromise.then(function(oData) {
+					oModel.refresh();
+					oReasonInput.setBusy(false);
+				}.bind(this)).catch(function(oError) {
+					oReasonInput.setBusy(false);
+				}.bind(this));
+			}
 		},
 
 		/* =========================================================== */
@@ -106,6 +119,19 @@ sap.ui.define([
 		},
 
 		onSendToEgger: function () {
+			var sStatus = this.getView().getBindingContext().getObject().status;
+			if (sStatus !== "E0000" && sStatus !== "E0002") {
+				sap.m.MessageToast.show(this.getResourceBundle().getText("sendOnlyStatusX"));
+				return;
+			}
+
+			var sDescription = this.byId("id_reclaDescription").getValue();
+			var sReason = this.byId("id_reasonInput").getValue();
+			if (sDescription.length <= 0 || sReason.length <= 0) {
+				sap.m.MessageToast.show(this.getResourceBundle().getText("fillDescAndReason"));
+				return;
+			}
+
 			sap.m.MessageBox.confirm(this.getResourceBundle().getText("confirmSend"), {
 				onClose: function (oAction) {
 					if (oAction === sap.m.MessageBox.Action.OK) {
@@ -117,10 +143,11 @@ sap.ui.define([
 								status: "E0001"
 							},
 							refreshAfterChange: true,
-							success: function() {
+							success: function () {
+								this.getModel().refresh();
 								sap.m.MessageToast.show(this.getResourceBundle().getText("statusChangeSuccess"));
-							}, 
-							error: function(oError){
+							}.bind(this),
+							error: function (oError) {
 								console.log(oError);
 								sap.m.MessageToast.show(this.getResourceBundle().getText("statusChangeError"));
 							}.bind(this)
@@ -128,6 +155,29 @@ sap.ui.define([
 					}
 				}.bind(this)
 			});
+		},
+
+		onSearchValueHelp: function (oEvent) {
+			var oParameters = oEvent.getParameters();
+			if (oParameters.clearButtonPressed) {
+				oParameters.itemsBinding.filter([]);
+			} else {
+				oParameters.itemsBinding.filter(new Filter({
+					filters: [
+						new Filter({
+							path: 'CODE',
+							operator: FilterOperator.Contains,
+							value1: oParameters.value
+						}),
+						new Filter({
+							path: 'name',
+							operator: FilterOperator.Contains,
+							value1: oParameters.value
+						})
+					],
+					and: false
+				}));
+			}
 		},
 
 		onSaveChanges: function () {
@@ -147,20 +197,22 @@ sap.ui.define([
 		},
 
 		onPostComment: function (oEvent) {
-			var sValue = oEvent.getParameter("value"); 
+			var sValue = oEvent.getParameter("value");
 			var sComplaint = this.getView().getBindingContext().getObject().ID;
-			
+
 			var oEntity = {
 				"complaint": sComplaint,
 				"comment": sValue
 			};
-			
+
 			this.getModel().create("/Comments", oEntity, {
-				error: function() {
+				error: function () {
 					sap.m.MessageToast.show(this.getResourceBundle().getText("commentError"));
 				}.bind(this)
 			});
 		},
+		
+		
 
 		/* =========================================================== */
 		/* begin: internal methods                                     */
@@ -181,6 +233,16 @@ sap.ui.define([
 				});
 				this._bindView("/" + sObjectPath);
 			}.bind(this));
+			if (sap.ui.getCore()._mlProcessingPromise) {
+				var oReasonInput = this.byId("id_reasonInput");
+				oReasonInput.setBusy(true);
+				sap.ui.getCore()._mlProcessingPromise.then(function(oData) {
+					oModel.refresh();
+					oReasonInput.setBusy(false);
+				}.bind(this)).catch(function(oError) {
+					oReasonInput.setBusy(false);
+				}.bind(this));
+			}
 		},
 
 		/**

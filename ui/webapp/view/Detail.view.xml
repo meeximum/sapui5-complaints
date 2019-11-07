@@ -67,7 +67,7 @@
 														visible="true"/>
 												</form:label>
 												<form:fields>
-													<TextArea value="{description}" rows="2" cols="20" maxLength="0" wrapping="None" enabled="true" required="false"
+													<TextArea id="id_reclaDescription" value="{description}" rows="2" cols="20" maxLength="0" wrapping="None" enabled="true" required="false"
 														valueStateText="Invalid entry" visible="true" change="onChangeDescription"/>
 												</form:fields>
 											</form:FormElement>
@@ -186,7 +186,7 @@
 			<semantic:NegativeAction text="{i18n>resetChanges}" press="onResetChanges"/>
 		</semantic:negativeAction>
 		<semantic:footerCustomActions>
-			<Button icon="sap-icon://paper-plane" text="{i18n>sendToEgger}" press="onSendToEgger"/>
+			<Button icon="sap-icon://paper-plane" text="{i18n>sendToEgger}" press="onSendToEgger" enabled="{= (${status} === 'E0000' || ${status} === 'E0002')}"/>
 		</semantic:footerCustomActions>
 	</semantic:SemanticPage>
 </mvc:View>

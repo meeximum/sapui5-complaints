@@ -23,7 +23,7 @@ sap.ui.define([
 			var oWizard = oView.byId("wizard");
 			oView.byId("step1").setValidated(true);
 			oView.byId("itemsTable").setBindingContext(oContext);
-			
+
 			oEvent.getSource().setSelected(true);
 
 			if (oWizard.getCurrentStep().indexOf("step1") >= 0) {
@@ -37,7 +37,7 @@ sap.ui.define([
 			var oView = this.getView();
 			var oWizard = oView.byId("wizard");
 			oView.byId("step2").setValidated(true);
-			
+
 			oEvent.getSource().setSelected(true);
 
 			if (oWizard.getCurrentStep().indexOf("step2") >= 0) {
@@ -86,13 +86,15 @@ sap.ui.define([
 			var oView = this.getView();
 			var oOrderObject = oView.byId("ordersTable").getSelectedItem().getBindingContext().getObject();
 			var oOrderItemObject = oView.byId("itemsTable").getSelectedItem().getBindingContext().getObject();
-			
+
 			var quantity = oView.byId("id_quantity").getValue();
-			
+
 			if (parseFloat(quantity) > oOrderItemObject.quantity) {
 				sap.m.MessageToast.show(this.getResourceBundle().getText("quantityTooBig"));
 				return;
 			}
+			
+			var sDescription = oView.byId("id_description").getValue();
 
 			this.getModel().create("/Complaints", {
 				"complaintNo": "DUMMY",
@@ -105,13 +107,20 @@ sap.ui.define([
 				"werks": "EGGER Wismar",
 				"menge": quantity,
 				"unit": "STK",
-				"description": oView.byId("id_description").getValue(),
+				"description": sDescription,
 				"code": null,
 				"status": "E0000"
 			}, {
-				success: function () {
+				success: function (oData) {
 					// this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-					this.getRouter().navTo("master", {});
+					this.getRouter().navTo("object", {
+						objectId : oData.ID
+					}, true);
+					sap.ui.getCore()._startMLProcessing({
+						complaint: oData.ID,
+						text: sDescription,
+						sap: false
+					});
 				}.bind(this),
 				error: function (oError) {
 					sap.m.MessageToast.show(oError);

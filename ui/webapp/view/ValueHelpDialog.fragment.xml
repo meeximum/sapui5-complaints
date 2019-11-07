@@ -6,6 +6,7 @@
 		cancel="onValueHelpCancelPress"
 		items="{/Codes}"
 		confirm="onValueHelpOkPress"
+		search="onSearchValueHelp"
 	>
 		<items>
 			<StandardListItem title="{CODE}" info="{name}" />
