@@ -23,6 +23,10 @@
         <EntitySet Name="OrderItems" EntityType="ComplaintsService.OrderItems"/>
         <EntitySet Name="Orders" EntityType="ComplaintsService.Orders"/>
         <EntitySet Name="Payments" EntityType="ComplaintsService.Payments"/>
+        <FunctionImport Name="setStatus" m:HttpMethod="POST">
+          <Parameter Name="complaint" Type="Edm.Guid" Mode="In" Nullable="true"/>
+          <Parameter Name="status" Type="Edm.String" Mode="In" Nullable="true"/>
+        </FunctionImport>
         <AssociationSet Name="Codes_texts_1" Association="ComplaintsService.Codes_texts_1">
           <End Role="Codes" EntitySet="Codes"/>
           <End Role="Codes_texts" EntitySet="Codes_texts"/>

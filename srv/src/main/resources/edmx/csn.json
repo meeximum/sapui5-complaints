@@ -644,6 +644,19 @@
       },
       "$syntax": "projection"
     },
+    "ComplaintsService.setStatus": {
+      "kind": "action",
+      "params": {
+        "complaint": {
+          "@cds.persistence.name": "COMPLAINT",
+          "type": "cds.UUID"
+        },
+        "status": {
+          "@cds.persistence.name": "STATUS",
+          "type": "cds.String"
+        }
+      }
+    },
     "Country": {
       "kind": "type",
       "@Common.Label": "{i18n>Country}",
