@@ -1,4 +1,12 @@
 {
 	"authenticationMethod": "none",
-	"routes": []
+	"routes": [{
+		"source": "^http://example.com/google_api/(.*)",
+		"target": "/$1",
+		"destination": "GOOGLE_ML"
+	}, {
+		"source": "^https://example.com/sap_api/(.*)",
+		"target": "/$1",
+		"destination": "SAP_ML"
+	}]
 }

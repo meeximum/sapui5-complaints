@@ -19,7 +19,6 @@ modules:
           name: srv_api
           url: '~{url}'
       - name: uaa_complaints
-      - name: GOOGLE_ML
   - name: complaints_ui_deployer
     type: com.sap.html5.application-content
     path: complaints_ui_deployer
