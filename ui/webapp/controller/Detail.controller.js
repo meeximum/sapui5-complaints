@@ -34,17 +34,6 @@ sap.ui.define([
 			this.setModel(oViewModel, "detailView");
 
 			this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
-			
-			if (sap.ui.getCore()._mlProcessingPromise) {
-				var oReasonInput = this.byId("id_reasonInput");
-				oReasonInput.setBusy(true);
-				sap.ui.getCore()._mlProcessingPromise.then(function(oData) {
-					oModel.refresh();
-					oReasonInput.setBusy(false);
-				}.bind(this)).catch(function(oError) {
-					oReasonInput.setBusy(false);
-				}.bind(this));
-			}
 		},
 
 		/* =========================================================== */
@@ -237,9 +226,10 @@ sap.ui.define([
 				var oReasonInput = this.byId("id_reasonInput");
 				oReasonInput.setBusy(true);
 				sap.ui.getCore()._mlProcessingPromise.then(function(oData) {
-					oModel.refresh();
+					this.getModel().refresh();
 					oReasonInput.setBusy(false);
 				}.bind(this)).catch(function(oError) {
+					this.getModel().refresh();
 					oReasonInput.setBusy(false);
 				}.bind(this));
 			}
