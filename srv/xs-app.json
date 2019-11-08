@@ -1,11 +1,11 @@
 {
 	"routes": [{
-		"source": "^https://example.com/google_api/(.*)",
-		"target": "$1",
+		"source": "^https://example.com/google_api/(.*)$",
+		"target": "/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict",
 		"destination": "GOOGLE_ML"
 	}, {
-		"source": "^https://example.com/sap_api/(.*)",
-		"target": "$1",
+		"source": "^https://example.com/sap_api/(.*)$",
+		"target": "/$1",
 		"destination": "SAP_ML"
 	}]
 }

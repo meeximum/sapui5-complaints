@@ -86,13 +86,14 @@ public class ComplaintsService {
 	@Action(Name = "setCode", serviceName = "ComplaintsService")
 	public OperationResponse setCodeAction(OperationRequest actionRequest, ExtensionHelper extensionHelper) {
 		String useSapAsString = (String) actionRequest.getParameters().get("sap");
-		Boolean useSap = "true".equalsIgnoreCase(useSapAsString);
+		//Boolean useSap = "true".equalsIgnoreCase(useSapAsString);
 		String text = (String) actionRequest.getParameters().get("text");
 		String entityId = (String) actionRequest.getParameters().get("complaint");
 
 		String code = null;
 		/*
 		if (useSap) {
+		
 			JSONObject json = Unirest.post(
 					"https://example.com/sap_api/api/v2/text/classification/models/complaint-01/versions/1")
 					.header("authorization",
@@ -101,7 +102,9 @@ public class ComplaintsService {
 
 			code = (String) json.query("/predictions/0/results/0/label");
 			// Double score = (Double)json.query("/predictions/0/results/0/score");
-		} else {
+		
+		
+	} else {
 			
 			JSONObject json2 = Unirest.post(
 					"https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
@@ -111,17 +114,18 @@ public class ComplaintsService {
 					.header("cache-control", "no-cache")
 					.body("{ \"payload\": { \"textSnippet\": { \"content\": \"" + text + "\", \"mime_type\": \"text/plain\" } } }")
 					.asJson().getBody().getObject();
-			*/	
+			*/
 			String auth = readCredentialsFromVCAP(); // "Bearer ya29.c.Kl6wBx-vkdVRLUhth34YgZ2FGZ407J2OphqN0oEM4zxUAmTVwjWGw5uwdh96rMbQRro9mSO0c44FnhCl7SFONERHsJxX33fvkqCjdNnF7jV0B-tU1UKeTCRzdRJI6d_R";
 			
 			LOG.error("Token:" + auth);
 			LOG.error("Text:" + text);
+			LOG.error("Entity:" + entityId);
 			
 			String json = Unirest.post("https://example.com/google_api/v1beta1/projects/663868982523/locations/us-central1/models/TCN3178648533481816064:predict")
     			  .header("content-type", "application/json")
     			  .header("authorization", auth)
     			  .header("cache-control", "no-cache")
-    			  .body("{ \"payload\": { \"textSnippet\": { \"content\": \"Preis ist falsch\", \"mime_type\": \"text/plain\" } } }")
+    			  .body("{ \"payload\": { \"textSnippet\": { \"content\": \"" + text + "\", \"mime_type\": \"text/plain\" } } }")
     			  .asString()
       			  .getBody();
     		
@@ -133,6 +137,10 @@ public class ComplaintsService {
 		    code = (m.find() && m.group(1) != null ? m.group(1) : "").trim().replace("\"", "");
 			
 			LOG.error("Code:" + code);
+			
+			if(code == null || code.equals("")) code = "40-HC-TE-VERS";
+			
+			LOG.error("Code2:" + code);
 			//Double score = (Double) json2.query("/payload/0/classification/score");
 		//}
 
@@ -145,7 +153,7 @@ public class ComplaintsService {
 		// EntityData entityDataComplaint = handler.executeRead("Complaints",
 		// keysForUpdate, complaintAttributes);
 		EntityData entityDataComplaint = EntityData.createFromMap(keysForCreate, complaintIDs, "Complaints");
-
+		LOG.error("EntityData:" + entityDataComplaint.toString());
 		try {
 			Map<String, Object> keysForUpdate = new HashMap<String, Object>();
 			keysForUpdate.put("ID", entityId);

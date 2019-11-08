@@ -19,7 +19,6 @@ modules:
           name: srv_api
           url: '~{url}'
       - name: uaa_complaints
-      - name: GOOGLE_ML
   - name: complaints_ui_deployer
     type: com.sap.html5.application-content
     path: complaints_ui_deployer
@@ -54,6 +53,7 @@ modules:
           JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml: {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
       - name: uaa_complaints
       - name: google_ml_auth
+      - name: GOOGLE_ML
   - name: ui
     type: html5
     path: ui
