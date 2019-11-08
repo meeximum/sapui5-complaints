@@ -10,7 +10,7 @@
 			<ObjectAttribute title="{i18n>aufnr}" text="{aufnr}" active="false" visible="true"/>
 			<ObjectAttribute title="{i18n>matnr}" text="{matnr} {makt}" active="false" visible="true"/>
 			<ObjectAttribute title="{i18n>createdAt}" text="{path: 'createdAt', formatter: '.formatter.dateFormatter'}" active="false" visible="true"/>
-			<ObjectStatus title="{i18n>status}" text="{status}" state="{path: 'status', formatter: '.formatter.statusFormatter'}" />
+			<ObjectStatus title="{i18n>status}" text="{status}" state="{path: 'status', formatter: '.formatter.statusFormatter'}"/>
 		</semantic:headerContent>
 		<semantic:content>
 			<IconTabBar expandable="false" expanded="true" applyContentPadding="false" backgroundDesign="Solid" upperCase="false" visible="true"
@@ -85,19 +85,10 @@
 					<IconTabFilter icon="sap-icon://attachment" iconColor="Neutral" text="" count="" design="Vertical" showAll="false" textDirection="Inherit"
 						enabled="true" visible="true" iconDensityAware="false">
 						<content>
-							<UploadCollection uploadEnabled="true" numberOfAttachmentsText="" showSeparators="All" items="{attachments}"
-								noDataText="{i18n>noAttachments}" visible="true" maximumFileSize="10"
-								mimeType="image/jpeg,image/gif,image/png,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-								multiple="false" uploadUrl="" sameFilenameAllowed="false" mode="SingleSelectMaster" uploadComplete="_onUploadCollectionUploadComplete"
-								change="_onUploadCollectionChange" typeMissmatch="_onUploadCollectionTypeMissmatch" fileSizeExceed="_onUploadCollectionFileSizeExceed">
-								<headerParameters/>
-								<items>
-									<UploadCollectionItem fileName="{filename}" mimeType="" uploadedDate="" url="" press="" deletePress="" enableEdit="false"
-										visibleEdit="false"></UploadCollectionItem>
-								</items>
-								<parameters/>
-								<toolbar/>
-							</UploadCollection>
+							<UploadCollection id="UploadCollection" maximumFilenameLength="55" maximumFileSize="10" multiple="true" sameFilenameAllowed="true"
+								instantUpload="false" noDataDescription="Drop files or use the &quot;+&quot; button for pending upload" change="onChange"
+								fileDeleted="onFileDeleted" filenameLengthExceed="onFilenameLengthExceed" fileSizeExceed="onFileSizeExceed" typeMissmatch="onTypeMissmatch"
+								uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUploadStarts"/>
 						</content>
 					</IconTabFilter>
 					<IconTabSeparator icon="" iconDensityAware="false" visible="{= ${status} === 'E0004'}"/>
@@ -186,7 +177,8 @@
 			<semantic:NegativeAction text="{i18n>resetChanges}" press="onResetChanges"/>
 		</semantic:negativeAction>
 		<semantic:footerCustomActions>
-			<Button icon="sap-icon://paper-plane" text="{i18n>sendToEgger}" press="onSendToEgger" enabled="{= (${status} === 'E0000' || ${status} === 'E0002')}"/>
+			<Button icon="sap-icon://paper-plane" text="{i18n>sendToEgger}" press="onSendToEgger"
+				enabled="{= (${status} === 'E0000' || ${status} === 'E0002')}"/>
 		</semantic:footerCustomActions>
 	</semantic:SemanticPage>
 </mvc:View>
